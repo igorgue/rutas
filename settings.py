@@ -121,6 +121,8 @@ INSTALLED_APPS = (
     # Apps
     'core',
     'home',
+    # 3rd party
+    'lettuce.django',
 )
 
 # A sample logging configuration. The only tangible logging
