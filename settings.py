@@ -11,7 +11,7 @@ except ImportError:
 
 # Adding PROJECT_PATH and apps to the path
 sys.path.insert(0, PROJECT_PATH)
-sys.path.insert(1, os.path.join('apps', PROJECT_PATH))
+sys.path.insert(1, os.path.join(PROJECT_PATH, 'apps'))
 
 ADMINS = (
     ('Igor Guerero', 'igfgt1@gmail.com'),
@@ -123,7 +123,7 @@ INSTALLED_APPS = (
     # Apps
     'place',
     'route',
-    'home',
+    'search',
     # 3rd party
     'lettuce.django',
 )
