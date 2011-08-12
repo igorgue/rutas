@@ -1,6 +1,7 @@
 # Django settings for rutas project.
 import os
 import sys
+from django.contrib.messages import constants as message_constants
 
 # Getting your local settings
 try:
@@ -10,6 +11,7 @@ except ImportError:
 
 # Adding PROJECT_PATH and apps to the path
 sys.path.insert(0, PROJECT_PATH)
+sys.path.insert(1, os.path.join('apps', PROJECT_PATH))
 
 ADMINS = (
     ('Igor Guerero', 'igfgt1@gmail.com'),
@@ -119,7 +121,8 @@ INSTALLED_APPS = (
     # Django toolbar
     'debug_toolbar',
     # Apps
-    'core',
+    'place',
+    'route',
     'home',
     # 3rd party
     'lettuce.django',

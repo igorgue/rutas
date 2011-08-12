@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^admin', 'django.views.generic.simple.redirect_to', {'url': "/admin/"}),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'', include('home.urls')),
+    url(r'', include('search.urls')),
 )
