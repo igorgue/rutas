@@ -1,0 +1,14 @@
+.DS_Store
+.coverage
+*.pyo
+*.pyc
+*.log
+*.swp
+*.swo
+build
+dist
+paython.egg-info
+local_settings.py
+rutas.db
+rutas_test.db
+*.esproj
