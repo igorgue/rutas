@@ -52,6 +52,8 @@
         return this;
       },
       search: function(key) {
+        var text;
+        text = $('#main-search').val();
         switch (key.keyCode) {
           case 13:
             console.log("Enter was pressed");
@@ -59,7 +61,7 @@
           default:
             console.log("autocomplete");
         }
-        if ($('#main-search').val() !== '') {
+        if (text !== '') {
           return $('#main-search-twipsy').fadeOut();
         } else {
           return $('#main-search-twipsy').fadeIn();

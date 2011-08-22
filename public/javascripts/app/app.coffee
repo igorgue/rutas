@@ -54,12 +54,13 @@ $(document).ready ->
       return @
 
     search: (key) ->
+      text = $('#main-search').val()
       switch key.keyCode
         when 13 then console.log("Enter was pressed")
         else console.log("autocomplete")
 
       # We hide or show the twipsy.
-      if $('#main-search').val() isnt ''
+      if text isnt ''
         $('#main-search-twipsy').fadeOut()
       else
         $('#main-search-twipsy').fadeIn()
