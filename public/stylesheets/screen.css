@@ -1,0 +1,14 @@
+
+#main-search {
+    font-size: 17px;
+    width: 100%;
+}
+
+#app-header h1 {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#app-results {
+    margin-top: 40px;
+}

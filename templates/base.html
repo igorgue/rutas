@@ -1,41 +1,53 @@
 <!doctype html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-<head>
-	<meta charset="utf-8" />
-	<title>{% block title %}Rutas Nicas :P{% endblock %}</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
-  <link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/base.css" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/skeleton.css" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}stylesheets/layout.css" />
-	
-	<!-- Favicons
-	================================================== -->
-	<link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" />
-	<link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}images/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}images/apple-touch-icon-114x114.png" />
 
-  {% block extrahead %}{% endblock %}
-</head>
-<body>
-	<div class="container">
-    {% block content %}{% endblock %}
-	</div><!-- container -->
+<!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"</script>
-  <script src="//documentcloud.github.com/backbone/backbone-min.js"</script>
+    <title>Rutas Nicas!</title>
+    <meta name="author" content="Igor Guerrero <igfgt1@gmail.com>">
 
-	<script src="{{ STATIC_URL }}javascripts/app.js"></script>
-  {% block extrajs %}{% endblock %}
-</body>
+    <script src="{{ STATIC_URL }}javascripts/vendor/modernizr.min.js"></script>
+    <script src="{{ STATIC_URL }}javascripts/vendor/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}javascripts/vendor/underscore.min.js"></script>
+    <script src="{{ STATIC_URL }}javascripts/vendor/backbone.min.js"></script>
+
+    <script src="{{ STATIC_URL }}javascripts/app/app.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}stylesheets/screen.css">
+    <link type="text/css" rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.0.0.min.css">
+
+    {% include "js_templates.html" %}
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="topbar">
+        <div class="fill">
+          <div class="container">
+            <h3><a href="/">Rutas Nicas!</a></h3>
+            <ul class="nav secondary-nav">
+              <li>
+                <a href="http://igorgue.com" target="blank" class="menu">@igorgue</a>
+              </li>
+            </ul>
+          </div>
+        </div> <!-- /fill -->
+      </div> <!-- /topbar -->
+    </div> <!-- /container -->
+
+    <div class="container" id="app-header">
+      <h1>(logo?)</h1>
+    </div>
+
+    <div class="container" id="app-form">
+    </div> <!-- /app-container -->
+
+    <div class="container well" id="app-results">
+    </div>
+  </body>
 </html>
