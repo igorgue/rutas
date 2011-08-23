@@ -1,16 +1,16 @@
 $(document).ready ->
 
-  window.Place = Backbone.Model.extend
+  class Place extends Backbone.Model
     defaults:
       name: ""
 
-  window.Places = Backbone.Collection.extend
+  class Places extends Backbone.Collection
     model: Place
     url: "/places"
 
-  window.places = new window.Places()
+  places = new Places()
 
-  window.PlaceView = Backbone.View.extend
+  class PlaceView extends Backbone.View
     tagName: "div"
     className: "place-view"
 
@@ -24,7 +24,7 @@ $(document).ready ->
       $('.container').html(@el)
       return @
 
-  window.PlaceListView = Backbone.View.extend
+  class PlaceListView extends Backbone.View
     tagName: "div"
     className: "place-list-view"
 
@@ -37,7 +37,7 @@ $(document).ready ->
       @placesViews.each (place) ->
         place.render()
 
-  window.SearchView = Backbone.View.extend
+  class SearchView extends Backbone.View
     tagName: "div"
     className: "search-bar"
 
@@ -65,15 +65,15 @@ $(document).ready ->
       else
         $('#main-search-twipsy').fadeIn()
 
-  window.RutasNicas = Backbone.Router.extend
+  class RutasNicas extends Backbone.Router
     routes:
       '': "home"
 
     initialize: ->
       #@placeListView = new PlaceView(
-        #collection: window.places
+        #collection: places
       #)
-      @searchView = new window.SearchView()
+      @searchView = new SearchView()
 
     home: ->
       $appContainer = $('#app-form')
@@ -82,5 +82,5 @@ $(document).ready ->
       $('#main-search').focus()
 
   $ ->
-    window.App = new RutasNicas()
+    App = new RutasNicas()
     Backbone.history.start()

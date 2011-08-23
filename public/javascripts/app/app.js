@@ -1,57 +1,90 @@
 (function() {
+  var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
   $(document).ready(function() {
-    window.Place = Backbone.Model.extend({
-      defaults: {
-        name: ""
+    var Place, PlaceListView, PlaceView, Places, RutasNicas, SearchView, places;
+    Place = (function() {
+      __extends(Place, Backbone.Model);
+      function Place() {
+        Place.__super__.constructor.apply(this, arguments);
       }
-    });
-    window.Places = Backbone.Collection.extend({
-      model: Place,
-      url: "/places"
-    });
-    window.places = new window.Places();
-    window.PlaceView = Backbone.View.extend({
-      tagName: "div",
-      className: "place-view",
-      template: _.template($('#place-template').html()),
-      initialize: function() {
+      Place.prototype.defaults = {
+        name: ""
+      };
+      return Place;
+    })();
+    Places = (function() {
+      __extends(Places, Backbone.Collection);
+      function Places() {
+        Places.__super__.constructor.apply(this, arguments);
+      }
+      Places.prototype.model = Place;
+      Places.prototype.url = "/places";
+      return Places;
+    })();
+    places = new Places();
+    PlaceView = (function() {
+      __extends(PlaceView, Backbone.View);
+      function PlaceView() {
+        PlaceView.__super__.constructor.apply(this, arguments);
+      }
+      PlaceView.prototype.tagName = "div";
+      PlaceView.prototype.className = "place-view";
+      PlaceView.prototype.template = _.template($('#place-template').html());
+      PlaceView.prototype.initialize = function() {
         return _.bindAll(this, 'render');
-      },
-      render: function() {
+      };
+      PlaceView.prototype.render = function() {
         $(this.el).html(this.template(this.model.toJSON()));
         $('.container').html(this.el);
         return this;
+      };
+      return PlaceView;
+    })();
+    PlaceListView = (function() {
+      __extends(PlaceListView, Backbone.View);
+      function PlaceListView() {
+        PlaceListView.__super__.constructor.apply(this, arguments);
       }
-    });
-    window.PlaceListView = Backbone.View.extend({
-      tagName: "div",
-      className: "place-list-view",
-      initialize: function() {
+      PlaceListView.prototype.tagName = "div";
+      PlaceListView.prototype.className = "place-list-view";
+      PlaceListView.prototype.initialize = function() {
         _.bindAll(this, 'render', 'renderPlaces');
         this.collection.bind('refresh', this.render);
         return this.collection.bind('add', this.renderPlace);
-      },
-      render: function() {
+      };
+      PlaceListView.prototype.render = function() {
         return this.placesViews.each(function(place) {
           return place.render();
         });
+      };
+      return PlaceListView;
+    })();
+    SearchView = (function() {
+      __extends(SearchView, Backbone.View);
+      function SearchView() {
+        SearchView.__super__.constructor.apply(this, arguments);
       }
-    });
-    window.SearchView = Backbone.View.extend({
-      tagName: "div",
-      className: "search-bar",
-      template: _.template($('#search-template').html()),
-      events: {
+      SearchView.prototype.tagName = "div";
+      SearchView.prototype.className = "search-bar";
+      SearchView.prototype.template = _.template($('#search-template').html());
+      SearchView.prototype.events = {
         'keyup #main-search': "search"
-      },
-      initialize: function() {
+      };
+      SearchView.prototype.initialize = function() {
         return _.bindAll(this, 'render', 'search');
-      },
-      render: function() {
+      };
+      SearchView.prototype.render = function() {
         $(this.el).html(this.template());
         return this;
-      },
-      search: function(key) {
+      };
+      SearchView.prototype.search = function(key) {
         var text;
         text = $('#main-search').val();
         switch (key.keyCode) {
@@ -66,25 +99,32 @@
         } else {
           return $('#main-search-twipsy').fadeIn();
         }
+      };
+      return SearchView;
+    })();
+    RutasNicas = (function() {
+      __extends(RutasNicas, Backbone.Router);
+      function RutasNicas() {
+        RutasNicas.__super__.constructor.apply(this, arguments);
       }
-    });
-    window.RutasNicas = Backbone.Router.extend({
-      routes: {
+      RutasNicas.prototype.routes = {
         '': "home"
-      },
-      initialize: function() {
-        return this.searchView = new window.SearchView();
-      },
-      home: function() {
+      };
+      RutasNicas.prototype.initialize = function() {
+        return this.searchView = new SearchView();
+      };
+      RutasNicas.prototype.home = function() {
         var $appContainer;
         $appContainer = $('#app-form');
         $appContainer.empty();
         $appContainer.append(this.searchView.render().el);
         return $('#main-search').focus();
-      }
-    });
+      };
+      return RutasNicas;
+    })();
     return $(function() {
-      window.App = new RutasNicas();
+      var App;
+      App = new RutasNicas();
       return Backbone.history.start();
     });
   });
