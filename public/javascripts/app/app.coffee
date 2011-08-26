@@ -1,5 +1,4 @@
 $ ->
-
   class window.Place extends Backbone.Model
     defaults:
       name: ""
