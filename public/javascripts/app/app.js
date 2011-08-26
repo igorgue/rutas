@@ -7,7 +7,7 @@
     child.__super__ = parent.prototype;
     return child;
   };
-  $(document).ready(function() {
+  $(function() {
     window.Place = (function() {
       __extends(Place, Backbone.Model);
       function Place() {
@@ -128,9 +128,7 @@
       };
       return RutasNicas;
     })();
-    return $(function() {
-      window.App = new RutasNicas();
-      return Backbone.history.start();
-    });
+    window.App = new RutasNicas();
+    return Backbone.history.start();
   });
 }).call(this);

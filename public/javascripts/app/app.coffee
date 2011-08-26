@@ -1,4 +1,4 @@
-$(document).ready ->
+$ ->
 
   class window.Place extends Backbone.Model
     defaults:
@@ -86,6 +86,5 @@ $(document).ready ->
       @searchView.render()
       @placeListView.render()
 
-  $ ->
-    window.App = new RutasNicas()
-    Backbone.history.start()
+  window.App = new RutasNicas()
+  Backbone.history.start()
