@@ -8,8 +8,7 @@
     return child;
   };
   $(document).ready(function() {
-    var Place, PlaceListView, PlaceView, Places, RutasNicas, SearchView, places;
-    Place = (function() {
+    window.Place = (function() {
       __extends(Place, Backbone.Model);
       function Place() {
         Place.__super__.constructor.apply(this, arguments);
@@ -19,7 +18,7 @@
       };
       return Place;
     })();
-    Places = (function() {
+    window.Places = (function() {
       __extends(Places, Backbone.Collection);
       function Places() {
         Places.__super__.constructor.apply(this, arguments);
@@ -28,8 +27,8 @@
       Places.prototype.url = "/places";
       return Places;
     })();
-    places = new Places();
-    PlaceView = (function() {
+    window.places = new Places();
+    window.PlaceView = (function() {
       __extends(PlaceView, Backbone.View);
       function PlaceView() {
         PlaceView.__super__.constructor.apply(this, arguments);
@@ -42,12 +41,11 @@
       };
       PlaceView.prototype.render = function() {
         $(this.el).html(this.template(this.model.toJSON()));
-        $('.container').html(this.el);
         return this;
       };
       return PlaceView;
     })();
-    PlaceListView = (function() {
+    window.PlaceListView = (function() {
       __extends(PlaceListView, Backbone.View);
       function PlaceListView() {
         PlaceListView.__super__.constructor.apply(this, arguments);
@@ -55,18 +53,23 @@
       PlaceListView.prototype.tagName = "div";
       PlaceListView.prototype.className = "place-list-view";
       PlaceListView.prototype.initialize = function() {
-        _.bindAll(this, 'render', 'renderPlaces');
-        this.collection.bind('refresh', this.render);
-        return this.collection.bind('add', this.renderPlace);
+        _.bindAll(this, 'render');
+        places.bind('all', this.render, this);
+        return places.fetch();
       };
       PlaceListView.prototype.render = function() {
-        return this.placesViews.each(function(place) {
-          return place.render();
+        places.each(function(place) {
+          var placeView;
+          placeView = new PlaceView({
+            model: place
+          });
+          return $('#app-results').append(placeView.render().el);
         });
+        return this;
       };
       return PlaceListView;
     })();
-    SearchView = (function() {
+    window.SearchView = (function() {
       __extends(SearchView, Backbone.View);
       function SearchView() {
         SearchView.__super__.constructor.apply(this, arguments);
@@ -81,7 +84,12 @@
         return _.bindAll(this, 'render', 'search');
       };
       SearchView.prototype.render = function() {
+        var $appContainer;
         $(this.el).html(this.template());
+        $appContainer = $('#app-form');
+        $appContainer.empty();
+        $appContainer.append(this.el);
+        $('#main-search').focus();
         return this;
       };
       SearchView.prototype.search = function(key) {
@@ -102,7 +110,7 @@
       };
       return SearchView;
     })();
-    RutasNicas = (function() {
+    window.RutasNicas = (function() {
       __extends(RutasNicas, Backbone.Router);
       function RutasNicas() {
         RutasNicas.__super__.constructor.apply(this, arguments);
@@ -111,20 +119,17 @@
         '': "home"
       };
       RutasNicas.prototype.initialize = function() {
+        this.placeListView = new PlaceListView();
         return this.searchView = new SearchView();
       };
       RutasNicas.prototype.home = function() {
-        var $appContainer;
-        $appContainer = $('#app-form');
-        $appContainer.empty();
-        $appContainer.append(this.searchView.render().el);
-        return $('#main-search').focus();
+        this.searchView.render();
+        return this.placeListView.render();
       };
       return RutasNicas;
     })();
     return $(function() {
-      var App;
-      App = new RutasNicas();
+      window.App = new RutasNicas();
       return Backbone.history.start();
     });
   });

@@ -1,16 +1,16 @@
 $(document).ready ->
 
-  class Place extends Backbone.Model
+  class window.Place extends Backbone.Model
     defaults:
       name: ""
 
-  class Places extends Backbone.Collection
+  class window.Places extends Backbone.Collection
     model: Place
     url: "/places"
 
-  places = new Places()
+  window.places = new Places()
 
-  class PlaceView extends Backbone.View
+  class window.PlaceView extends Backbone.View
     tagName: "div"
     className: "place-view"
 
@@ -21,23 +21,26 @@ $(document).ready ->
 
     render: ->
       $(@el).html(@template(@model.toJSON()))
-      $('.container').html(@el)
       return @
 
-  class PlaceListView extends Backbone.View
+  class window.PlaceListView extends Backbone.View
     tagName: "div"
     className: "place-list-view"
 
     initialize: ->
-      _.bindAll(@, 'render', 'renderPlaces')
-      @collection.bind('refresh', @render)
-      @collection.bind('add', @renderPlace)
+      _.bindAll(@, 'render')
+      places.bind('all', @render, @)
+
+      places.fetch()
 
     render: ->
-      @placesViews.each (place) ->
-        place.render()
+      places.each (place) ->
+        placeView = new PlaceView({model: place})
+        $('#app-results').append(placeView.render().el)
 
-  class SearchView extends Backbone.View
+      return @
+
+  class window.SearchView extends Backbone.View
     tagName: "div"
     className: "search-bar"
 
@@ -51,6 +54,12 @@ $(document).ready ->
 
     render: ->
       $(@el).html(@template())
+
+      $appContainer = $('#app-form')
+      $appContainer.empty()
+      $appContainer.append(@el)
+      $('#main-search').focus()
+
       return @
 
     search: (key) ->
@@ -65,22 +74,18 @@ $(document).ready ->
       else
         $('#main-search-twipsy').fadeIn()
 
-  class RutasNicas extends Backbone.Router
+  class window.RutasNicas extends Backbone.Router
     routes:
       '': "home"
 
     initialize: ->
-      #@placeListView = new PlaceView(
-        #collection: places
-      #)
+      @placeListView = new PlaceListView()
       @searchView = new SearchView()
 
     home: ->
-      $appContainer = $('#app-form')
-      $appContainer.empty()
-      $appContainer.append(@searchView.render().el)
-      $('#main-search').focus()
+      @searchView.render()
+      @placeListView.render()
 
   $ ->
-    App = new RutasNicas()
+    window.App = new RutasNicas()
     Backbone.history.start()
