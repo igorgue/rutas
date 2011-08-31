@@ -12,3 +12,13 @@
 <script type="text/template" id="place-template">
   <h1><%= name %></h1>
 </script>
+
+<script type="text/template" id="route-template">
+  <h1><%= name %></h1>
+
+  <ul>
+    <% _.each(places, function(place) { %>
+      <li>place.name</li>
+    <% }); %>
+  </ul>
+</script>

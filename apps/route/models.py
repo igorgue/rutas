@@ -9,6 +9,9 @@ class Route(models.Model):
     name = models.CharField(max_length=255, unique=True, blank=True)
     places = models.ManyToManyField('place.Place', related_name='routes', blank=True)
 
+    def __unicode__(self):
+        return self.name
+
     def add_place(self, name):
         """Adds a place from the route model"""
         from place.models import Place

@@ -1,14 +1,29 @@
 $ ->
+  # Place models.
   class window.Place extends Backbone.Model
     defaults:
       name: ""
+      routes: []
 
   class window.Places extends Backbone.Collection
     model: Place
     url: "/places"
 
-  window.places = new Places()
+  window.places = new Places
 
+  # Routes models.
+  class window.Route extends Backbone.Model
+    defaults:
+      name: ""
+      places: []
+
+  class window.Routes extends Backbone.Collection
+    model: Route
+    url: "/routes"
+
+  window.routes = new Routes
+
+  # Places views.
   class window.PlaceView extends Backbone.View
     tagName: "div"
     className: "place-view"
@@ -39,6 +54,38 @@ $ ->
 
       return @
 
+  # Routes views.
+  class window.RouteView extends Backbone.View
+    tagName: "div"
+    className: "route-view"
+
+    template: _.template($('#route-template').html())
+
+    initialize: ->
+      _.bindAll(@, 'render')
+
+    render: ->
+      $(@el).html(@template(@model.toJSON()))
+      return @
+
+  class window.RouteListView extends Backbone.View
+    tagName: "div"
+    className: "route-list-view"
+
+    initialize: ->
+      _.bindAll(@, 'render')
+      places.bind('all', @render, @)
+
+      routes.fetch()
+
+    render: ->
+      routes.each (route) ->
+        routeView = new RouteView({model: route})
+        $('#app-results').append(routeView.render().el)
+
+      return @
+
+  # Search view.
   class window.SearchView extends Backbone.View
     tagName: "div"
     className: "search-bar"
@@ -73,17 +120,18 @@ $ ->
       else
         $('#main-search-twipsy').fadeIn()
 
+  # App router.
   class window.RutasNicas extends Backbone.Router
     routes:
       '': "home"
 
     initialize: ->
-      @placeListView = new PlaceListView()
+      @routeListView = new RouteListView()
       @searchView = new SearchView()
 
     home: ->
       @searchView.render()
-      @placeListView.render()
+      @routeListView.render()
 
   window.App = new RutasNicas()
   Backbone.history.start()

@@ -6,7 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Enable the admin:
-    url(r'^admin', 'django.views.generic.simple.redirect_to', {'url': "/admin/"}),
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^places', include('place.urls')),

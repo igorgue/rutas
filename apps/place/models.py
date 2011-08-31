@@ -8,6 +8,9 @@ class Place(models.Model):
     """
     name = models.CharField(max_length=255, unique=True, blank=True)
 
+    def __unicode__(self):
+        return self.name
+
     def add_route(self, name):
         """Adds a route from the model"""
         from route.models import Route

@@ -14,7 +14,8 @@
         Place.__super__.constructor.apply(this, arguments);
       }
       Place.prototype.defaults = {
-        name: ""
+        name: "",
+        routes: []
       };
       return Place;
     })();
@@ -27,7 +28,28 @@
       Places.prototype.url = "/places";
       return Places;
     })();
-    window.places = new Places();
+    window.places = new Places;
+    window.Route = (function() {
+      __extends(Route, Backbone.Model);
+      function Route() {
+        Route.__super__.constructor.apply(this, arguments);
+      }
+      Route.prototype.defaults = {
+        name: "",
+        places: []
+      };
+      return Route;
+    })();
+    window.Routes = (function() {
+      __extends(Routes, Backbone.Collection);
+      function Routes() {
+        Routes.__super__.constructor.apply(this, arguments);
+      }
+      Routes.prototype.model = Route;
+      Routes.prototype.url = "/routes";
+      return Routes;
+    })();
+    window.routes = new Routes;
     window.PlaceView = (function() {
       __extends(PlaceView, Backbone.View);
       function PlaceView() {
@@ -68,6 +90,47 @@
         return this;
       };
       return PlaceListView;
+    })();
+    window.RouteView = (function() {
+      __extends(RouteView, Backbone.View);
+      function RouteView() {
+        RouteView.__super__.constructor.apply(this, arguments);
+      }
+      RouteView.prototype.tagName = "div";
+      RouteView.prototype.className = "route-view";
+      RouteView.prototype.template = _.template($('#route-template').html());
+      RouteView.prototype.initialize = function() {
+        return _.bindAll(this, 'render');
+      };
+      RouteView.prototype.render = function() {
+        $(this.el).html(this.template(this.model.toJSON()));
+        return this;
+      };
+      return RouteView;
+    })();
+    window.RouteListView = (function() {
+      __extends(RouteListView, Backbone.View);
+      function RouteListView() {
+        RouteListView.__super__.constructor.apply(this, arguments);
+      }
+      RouteListView.prototype.tagName = "div";
+      RouteListView.prototype.className = "route-list-view";
+      RouteListView.prototype.initialize = function() {
+        _.bindAll(this, 'render');
+        places.bind('all', this.render, this);
+        return routes.fetch();
+      };
+      RouteListView.prototype.render = function() {
+        routes.each(function(route) {
+          var routeView;
+          routeView = new RouteView({
+            model: route
+          });
+          return $('#app-results').append(routeView.render().el);
+        });
+        return this;
+      };
+      return RouteListView;
     })();
     window.SearchView = (function() {
       __extends(SearchView, Backbone.View);
@@ -119,12 +182,12 @@
         '': "home"
       };
       RutasNicas.prototype.initialize = function() {
-        this.placeListView = new PlaceListView();
+        this.routeListView = new RouteListView();
         return this.searchView = new SearchView();
       };
       RutasNicas.prototype.home = function() {
         this.searchView.render();
-        return this.placeListView.render();
+        return this.routeListView.render();
       };
       return RutasNicas;
     })();
